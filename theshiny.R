@@ -44,7 +44,7 @@ server <- function(input, output) {
     
     img <- img * 1/255
     
-    preds <- model %>% predict_proba(test_image) %>%
+    preds <- model %>% predict_proba(img) %>%
       as.data.frame() %>%
       t() %>%
       as.data.frame() %>%
