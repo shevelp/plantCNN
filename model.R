@@ -7,9 +7,9 @@ library(tidyverse)
 library(keras)
 library(tfdatasets)
 
-data_dir_train <- "/home/sergio/Projects/Agro/postcovid19/data/train/"
-data_dir_valid <- "/home/sergio/Projects/Agro/postcovid19/data/valid/"
-data_dir_test <- "/home/sergio/Projects/Agro/postcovid19/data/test/"
+data_dir_train <- "your/dir"
+data_dir_valid <- "your/dir"
+data_dir_test <- "your/dir"
 
 # generators
 train_data_gen = image_data_generator(
@@ -61,7 +61,7 @@ df.classes <- t(plant_classes_indices) %>%
 df.classes$classes <- rownames(df.classes)
 rownames(df.classes) = df.classes$V1
 
-write_csv(df.classes,"/home/sergio/Projects/Agro/postcovid19/classes.csv")
+write_csv(df.classes,"your/dir")
 
 # validation images generator 
 valid_image_array_gen <- flow_images_from_directory(data_dir_valid, 
@@ -139,26 +139,23 @@ model %>% fit_generator(
 )
 
 
+#save model
 
-
-
-
-
-
-
-
-model <- load_model_tf("/home/sergio/Projects/Agro/postcovid19/model/cnn-agro/")
+save_model_tf(model, "cnn-agro")
 
 
 #predict
+
 #preproces image 
 
-test_image = image_load("/home/sergio/Projects/Agro/postcovid19/data/train/Apple___Apple_scab/00075aa8-d81a-4184-8541-b692b78d398a___FREC_Scab 3335.JPG",
+test_image = image_load("your/dir",
                         target_size = target_size)  %>%
                                     image_to_array() %>%
                                             array_reshape(dim = c(1,20,20,3))
 test_image = test_image * 1/255 #important
 
+
+#predict
 preds <- model %>% predict_proba(test_image) %>%
   as.data.frame() %>%
   t() %>%
@@ -168,14 +165,5 @@ classes <- read.csv("./classes.csv")
 rownames(preds) <- classes$classes
 names(classes) <- "score"
 View(preds)
-
-#predict
-
-
-model %>% predict_proba(test_image)
-
-#save model
-
-save_model_tf(model, "cnn-agro")
 
 
