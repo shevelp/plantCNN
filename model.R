@@ -1,5 +1,5 @@
 # CNN
-setwd("/home/sergio/Projects/Agro/postcovid19/")
+setwd("your/dir")
 
 
 library(EBImage)
